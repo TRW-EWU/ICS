@@ -37,5 +37,5 @@ class MyModbusServer:
         self.identity.MajorMinorRevision = '1.0'
 
         self.svr = StartTcpServer(context=self.context, identity=self.identity, 
-                                    address=("0.0.0.0", 502))
+                                    address=("10.101.68.70", 502))
 

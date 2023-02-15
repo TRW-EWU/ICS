@@ -1,9 +1,5 @@
 #!/usr/bin/env/python3
 
-##################################################
-# TIP
-#
-
 import argparse
 from MyModbusServer import MyModbusServer
 

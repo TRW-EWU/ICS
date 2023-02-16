@@ -1,0 +1,24 @@
+scapy
+
+ip = IP(src='10.101.68.80', dst='10.101.68.70')
+tcp = TCP(sport=12345, dport=502)
+pkt = ip/tcp
+send(pkt)
+pkt.show()
+answer = sr1(pkt)
+send(ip/fuzz(TCP(dport=502)),loop=1)
+
+from Modbus.Modbus import *
+from Modbus import *
+pkt = ip/tcp/ModbusADU()
+pkt.show()
+pkt[ModbusADU].show()
+pkt = ip/tcp/ModbusADU()/ModbusPDU01_Read_Coils() # TAB-TAB not work
+pkt = ip/tcp/ModbusADU()/ModbusPDU02_Read_Discrete_Inputs() # TAB-TAB not work
+pkt = ip/tcp/ModbusADU()/ModbusPDU03_Read_Holding_Registers() # TAB-TAB not work
+pkt = ip/tcp/ModbusADU()/ModbusPDU04_Read_Input_Registers() # TAB-TAB not work
+send(packet)
+pkt = ip/tcp/ModbusADU()/ModbusPDU01_Read_Coils() # TAB-TAB not work
+pkt = ip/tcp/ModbusADU()/ModbusPDU02_Read_Discrete_Inputs() # TAB-TAB not work
+pkt = ip/tcp/ModbusADU()/ModbusPDU03_Read_Holding_Registers() # TAB-TAB not work
+pkt = ip/tcp/ModbusADU()/ModbusPDU04_Read_Input_Registers() # TAB-TAB not work

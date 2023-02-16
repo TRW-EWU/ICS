@@ -29,7 +29,7 @@ class MyModbusServer:
         self.context = ModbusServerContext(slaves=self.store, single=True)
 
         self.identity = ModbusDeviceIdentification()
-        self.identity.VendorName = 'PyModbus Inc.'
+        self.identity.VendorName = 'ModbusTagServer'
         self.identity.ProductCode = 'PM'
         self.identity.VendorUrl = 'https://github.com/riptideio/pyModbus'
         self.identity.ProductName = 'Modbus Server'
@@ -37,5 +37,5 @@ class MyModbusServer:
         self.identity.MajorMinorRevision = '1.0'
 
         self.svr = StartTcpServer(context=self.context, identity=self.identity, 
-                                    address=("10.101.68.70", 502))
+                                    address=("0.0.0.0", 502))
 

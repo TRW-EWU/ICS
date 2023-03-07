@@ -38,3 +38,6 @@ class MyModbusServer:
         self.svr = StartTcpServer(context=self.context, identity=self.identity, 
                                     address=("0.0.0.0", 502))
 
+if __name__ == '__main__':
+	svr = MyModbusServer()
+	svr.modbus_server()

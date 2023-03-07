@@ -4,7 +4,7 @@ import argparse
 import sys
 
 from MyModbusServer import MyModbusServer
-#from MyModbusClient import MyModbusClient
+from MyModbusClient import MyModbusClient
 
 def get_arguments():
 	parser = argparse.ArgumentParser()
@@ -19,22 +19,16 @@ def get_arguments():
 
 def main():
 	options = get_arguments()
-	#print(options)
-	#print(options.server)
-	#print(options.client)
 
 	if (options.server != None):
 		if (options.server == 'modbus'):
 			svr = MyModbusServer()
 			svr.modbus_server()
-			pass
 
 	if (options.client != None):
 		if (options.client == 'modbus'):
-			#svr = MyModbusClient()
-			#print(svr.x)
-			#svr.modbus_client()
-			pass
+			svr = MyModbusClient()
+			svr.modbus_client()
 
 if __name__ == '__main__':
 	print(sys.version)

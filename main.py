@@ -1,5 +1,7 @@
 #!/usr/bin/env/python3
 
+# OBSOLETE: Use tip.py as main program
+
 import argparse
 from MyModbusServer import MyModbusServer
 

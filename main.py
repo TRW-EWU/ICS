@@ -21,7 +21,7 @@ def main():
 		svr = MyModbusServer()
 		svr.modbus_server()
 	else:
-		print("*** Invalid server option: " + options.server)
+		print("Invalid server option: ", options.server)
 
 if __name__ == '__main__':
 	main()

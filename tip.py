@@ -1,6 +1,7 @@
 #!/usr/bin/env/python3
 
 import argparse
+import socket
 import sys
 
 from MyModbusServer import MyModbusServer
@@ -14,6 +15,28 @@ def get_arguments():
 	# if not arguments.aaa:
 		# parser.error("[-] Please specify arg 'aaa' .")
 	return arguments
+
+def hack():
+	print("Hack...")
+
+	hostName = socket.gethostname()
+	print("HostName: " + hostName)
+
+	ip_addr = socket.gethostbyname(hostName)
+	print("My IP address is: " + ip_addr)
+
+	import os
+	#q = os.system('ifconfig')
+	#print(q)
+
+	import platform
+	#print(platform.node())
+
+	s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+	# connect() for UDP doesn't send packets
+	#s.connect(('10.0.0.0', 0)) 
+	s.connect(('192.0.0.0', 0)) 
+	print(s.getsockname()[0])
 
 ################### Main #######################
 
@@ -33,6 +56,6 @@ def main():
 if __name__ == '__main__':
 	print(sys.version)
 	main()
-
+	hack()
 
 

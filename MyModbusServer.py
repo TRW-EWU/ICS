@@ -13,7 +13,8 @@ from pymodbus.datastore import ModbusSlaveContext, ModbusServerContext
 
 class MyModbusServer:
     def __init__(self):
-        self.dig_in = ModbusSequentialDataBlock(0, [17]*100),                     # digital inputs
+        # TRW: Does not appear to read 1st element in DataBlock
+        self.dig_in = ModbusSequentialDataBlock(0, [1,0,1,0,0,1,1,0,0,0,1,1,1])   # digital inputs
         self.coil_out = ModbusSequentialDataBlock(0, [1, 0, 0, 1, 1, 0, 1, 1, 1]) # %M1 5
         self.holding_reg = ModbusSequentialDataBlock(0, [1,2,3,4,5,6,8]*10)       # 40 0001
         self.input_reg = ModbusSequentialDataBlock(0, [9, 0]*100)                 # 30 0001

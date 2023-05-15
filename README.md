@@ -4,4 +4,8 @@
 sudo pip install pymodbus
 
 ## Execution
-python3 main.py --help
+python3 tip.py --help
+
+## Fro a Modbus Server
+python3 tip.py -s modbus
+

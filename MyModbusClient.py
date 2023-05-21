@@ -3,22 +3,25 @@ from Modbus import *
 import time
 
 # # Defining the script variables
-srcIP = '10.101.68.80'
+srcIP = '10.0.0.142'
 srcPort = random.randint(1024, 65535)
-dstIP = '10.101.68.70'
+dstIP = '10.0.0.195'
 dstPort = 502
 seqNr = random.randint(444, 8765432)
 ackNr = 0
 transID = random.randint(44, 44444)
 
 def updateSeqAndAckNrs(sendPkt, recvdPkt):
+    print("BEGIN: updateSeqAndAckNrs...")
     # Keep track of tcp sequence and acknowledge numbers
     global seqNr
     global ackNr
     seqNr = seqNr + len(sendPkt[TCP].payload)
     ackNr = ackNr + len(recvdPkt[TCP].payload)
+    print("END: ...updateSeqAndAckNrs\n")
 
 def sendAck():
+    print("BEGIN: sendAck...")
     # Create the acknowledge packet
     ip = IP(src=srcIP, dst=dstIP)
     ACK = TCP(sport=srcPort, dport=dstPort, flags='A', seq=seqNr, ack=ackNr)
@@ -27,9 +30,11 @@ def sendAck():
 
     # Send the acknowledge packet
     send(pktACK)
+    print("END: ...sendAck\n")
 
 
 def tcpHandshake():
+    print("BEGIN: tcpHandshake...")
     # Establish a connection with the server by means of the tcp
     # three-way handshake
     # Note: linux might send an RST for forged SYN packets. Disabe it by executing:
@@ -60,9 +65,12 @@ def tcpHandshake():
     ACK = TCP(sport=srcPort, dport=dstPort, flags='A', seq=seqNr, ack=ackNr)
     #print("DEBUG: Sending ACK to Modbus Server...")
     send(ip/ACK)
+    
+    print("END: ...tcpHandshake\n")
     return ip/ACK
 
 def endConnection():
+    print("BEGIN: endConnection...")
     # Create the RST packet
     ip = IP(src=srcIP, dst=dstIP)
     RST = TCP(sport=srcPort, dport=dstPort, flags='RA', seq=seqNr, ack=ackNr)
@@ -71,18 +79,21 @@ def endConnection():
 
     # Send the RST packet
     send(pktRST)
+    print("END: ...endConnection\n")
 
 def connectedSend(pkt):
+    print("BEGIN: ConnectedSend...")
     # Update packet's sequence and acknowledge numbers
     # before sending
     pkt[TCP].flags = 'PA'
     pkt[TCP].seq = seqNr
     pkt[TCP].ack = ackNr
     send(pkt)
+    print("END: ...ConnectedSend\n")
 
 
 def ThomTest():
-    print("ThomTest")
+    print("BEGIN: ThomTest...")
     # First establish a connection. The packet returned by the
     # function contains the connection parameters
     ConnectionPkt = tcpHandshake()
@@ -98,8 +109,10 @@ def ThomTest():
     # Set the function code, start and stop registers and define
     # the Unit ID
     ModbusPkt[ModbusADU].unitId = 1
-    ModbusPkt[ModbusPDU01_Read_Coils].funcCode = 1
-    ModbusPkt[ModbusPDU01_Read_Coils].quantity = 8
+    
+    ModbusPkt[ModbusPDU01_Read_Coils].funcCode = 4
+    
+    ModbusPkt[ModbusPDU01_Read_Coils].quantity = 10
 
     # Create a unique transaction ID
     ModbusPkt[ModbusADU].transID = transID + 3
@@ -114,19 +127,17 @@ def ThomTest():
     #print("DEBUG: Results...")
     #print(Results.show())
 
+    print("DEBUG: Response Packet...")
     ResponsePkt = Results[0]
-    #print("DEBUG: ResponsePkt...")
-    #print(ResponsePkt.show())
+    ResponsePkt.show()
+    print("DEBUG: ...Response Packet\n")
 
     updateSeqAndAckNrs(ModbusPkt, ResponsePkt)
 
-    print("DEBUG: AAA...")
-    ResponsePkt.show()
-    print("DEBUG: BBB...")
-
     sendAck()
-    
     endConnection()
+    print("END: ...ThomTest\n")
+
 
 
 

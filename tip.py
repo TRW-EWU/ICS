@@ -50,12 +50,12 @@ def main():
 
 	if (options.client != None):
 		if (options.client == 'modbus'):
-			svr = MyModbusClient()
-			svr.modbus_client()
+			client = MyModbusClient()
+			client.modbus_client()
 
 if __name__ == '__main__':
 	print(sys.version)
 	main()
-	hack()
+	#hack()
 
 

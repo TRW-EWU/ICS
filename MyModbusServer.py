@@ -3,21 +3,13 @@ from pymodbus.device import ModbusDeviceIdentification
 from pymodbus.datastore import ModbusSequentialDataBlock
 from pymodbus.datastore import ModbusSlaveContext, ModbusServerContext
 
-#
-# modbus-cli
-#
-# modbus read <IP> %M1 -5
-# modbus read <IP> 300001 1-10
-# modbus read <IP> 400001 1-10
-#
-
 class MyModbusServer:
     def __init__(self):
         # TRW: Does not appear to read 1st element in DataBlock
-        self.dig_in = ModbusSequentialDataBlock(0, [1,0,1,0,0,1,1,0,0,0,1,1,1])   # digital inputs
-        self.coil_out = ModbusSequentialDataBlock(0, [1, 0, 0, 1, 1, 0, 1, 1, 1]) # %M1 5
-        self.holding_reg = ModbusSequentialDataBlock(0, [1,2,3,4,5,6,8]*10)       # 40 0001
-        self.input_reg = ModbusSequentialDataBlock(0, [9, 0]*100)                 # 30 0001
+        self.coil_out = ModbusSequentialDataBlock(0, [0, 1,0,1,1,0,0,1,1,1,0,0,0]) # DigOut
+        self.dig_in = ModbusSequentialDataBlock(0,   [0, 0,1,0,0,1,1,0,0,0,1,1,1]) # DigIn
+        self.input_reg = ModbusSequentialDataBlock(0,   [0,  1,3,5,7,9,11,13,15,17,19]) # AnIn                 # 30 0001
+        self.holding_reg = ModbusSequentialDataBlock(0, [0,  2,4,6,8,10,12,14,16,18,20]) # AnOut
 
     def modbus_server(self):
         print("Modbus Server ....")

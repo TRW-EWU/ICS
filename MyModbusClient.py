@@ -4,8 +4,10 @@ import time
 
 # # Defining the script variables
 srcIP = '10.0.0.142'
+srcIP = '10.101.68.61'
 srcPort = random.randint(1024, 65535)
 dstIP = '10.0.0.195'
+dstIP = '10.101.68.73'
 dstPort = 502
 seqNr = random.randint(444, 8765432)
 ackNr = 0

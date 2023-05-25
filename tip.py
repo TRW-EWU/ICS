@@ -9,8 +9,8 @@ from MyModbusClient import MyModbusClient
 
 def get_arguments():
 	parser = argparse.ArgumentParser()
-	parser.add_argument("-s", "--server", dest="server", help="SERVER: modbus, profinet, s7")
-	parser.add_argument("-c", "--client", dest="client", help="CLIENT: modbus, profinet, s7")
+	parser.add_argument("-m", "--modbus", dest="modbus", help="client, server")
+	parser.add_argument("-f", "--function", dest="function", help="scan, test, map, define")
 	arguments = parser.parse_args()
 	# if not arguments.aaa:
 		# parser.error("[-] Please specify arg 'aaa' .")
@@ -38,20 +38,41 @@ def hack():
 	s.connect(('192.0.0.0', 0)) 
 	print(s.getsockname()[0])
 
+
+def myScan():
+	print("My Scanner")
+
+def myTest():
+	print("My Test")
+
+def myMap():
+	print("My Map")
+
+def myDefine():
+	print("My Define")
+
 ################### Main #######################
 
 def main():
 	options = get_arguments()
+	print(options)
 
-	if (options.server != None):
-		if (options.server == 'modbus'):
+	if (options.modbus != None):
+		if (options.modbus == 'server'):
 			svr = MyModbusServer()
 			svr.modbus_server()
-
-	if (options.client != None):
-		if (options.client == 'modbus'):
+		elif (options.modbus == 'client'):
 			client = MyModbusClient()
 			client.modbus_client()
+	elif (options.function != None):
+		if (options.function == 'scan'):
+			myScan()
+		elif (options.function == 'test'):
+			myTest()
+		elif (options.function == 'map'):
+			myMap()
+		elif (options.function == 'define'):
+			myDefine()
 
 if __name__ == '__main__':
 	print(sys.version)

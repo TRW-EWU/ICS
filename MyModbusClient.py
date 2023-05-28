@@ -1,13 +1,19 @@
 from scapy.all import *
 from Modbus import *
+
+import ipaddress
+import os
+import netifaces
+import re
+import subprocess
 import time
 
 # # Defining the script variables
-srcIP = '10.0.0.142'
-srcIP = '10.101.68.61'
+srcIP = '10.0.0.195'
+
 srcPort = random.randint(1024, 65535)
-dstIP = '10.0.0.195'
 dstIP = '10.101.68.73'
+dstIP = '10.0.0.142'
 dstPort = 502
 seqNr = random.randint(444, 8765432)
 ackNr = 0
@@ -141,15 +147,78 @@ def ThomTest():
     print("END: ...ThomTest\n")
 
 
-
-
 class MyModbusClient:
     def __init__(self):
-        self.x = 4
+        #print("BEGIN: MyModbusClient...")
 
-    def modbus_client(self):
-        print("Modbus Client ....")
-        ThomTest()
+        self.hostName = socket.gethostname()
+
+        # REVISIT: Will this work on Private IP with no internet access?
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(("8.8.8.8", 80))
+        self.srcIP = s.getsockname()[0]
+
+        # Get the subnet mask
+        gws = netifaces.gateways()
+        default_interface = gws['default'][netifaces.AF_INET][1]
+        self.subnetMask = netifaces.ifaddresses(default_interface)[netifaces.AF_INET][0]['netmask']
+
+        # Get the gateway
+        self.gateway = "1.1.1.1 ???"
+
+        # Get the MAC address
+        #ifconfig_result = subprocess.check_output(["ifconfig", "eth0"])
+        ifconfig_result = subprocess.check_output(["ifconfig"])
+        mac_address_search_result = re.search(r"\w\w:\w\w:\w\w:\w\w:\w\w:\w\w", ifconfig_result.decode("utf-8"))
+        self.macAddress = mac_address_search_result.group(0)
+
+        # Get the network interface
+        self.ipInterface = ipaddress.IPv4Interface(self.srcIP + '/' + self.subnetMask)
+
+        #print("END: ...MyModbusClient\n")
+
+    def run(self):
+        #print("Modbus Client ....")
+        self.displayModbusMenu()
+
+    def getNetInfo(self):
+        print(f"Hostname: {self.hostName}")
+        print(f"Local IP: {self.srcIP}")
+        print(f"Subnet Mask: {self.subnetMask}")
+        print(f"Gateway: {self.gateway}")
+        print(f"MAC Address: {self.macAddress}")
+        print(f"IP Interface: {self.ipInterface.network}")
+
+    def displayModbusMenu(self):
+        flagLoop = True
+        os.system('clear')
+        while flagLoop:
+            print("\n\n\tModbus Client Menu")
+            print("\t******************\n")
+            print("\t  1. Get Network Information")
+            print("\t  2. two")
+            print("\t  3. three")
+            print("\t  4. four")
+            print("\t  5. five")
+            print("\t  6. Quit\n")
+            iChoice = input("\tEnter Selection: ")
+            print("\n")
+
+            if iChoice == '1':
+                self.getNetInfo()
+            elif iChoice == '2':
+                print("two")
+            elif iChoice == '3':
+                print("three")
+            elif iChoice == '4':
+                print("four")
+            elif iChoice == '5':
+                print("five")
+            elif iChoice == '6':
+                print("six")
+                flagLoop = False
+            else:
+                print("Invalid Choice")
 
 
 
